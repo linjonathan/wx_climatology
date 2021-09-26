@@ -6,7 +6,7 @@ import numpy as np
 import sys
 
 web_link = 'https://mesonet.agron.iastate.edu/mos/table.phtml?'
-station = sys.argv[1]
+station = 'K' + sys.argv[1]
 model = sys.argv[2]
 start_dt = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
 

@@ -5,25 +5,27 @@ import numpy as np
 import pickle
 import plot_hist
 import sys
+from bs4 import BeautifulSoup
 
-station = sys.argv[1]
-f = open('data/%s.csv' % station)
-data = csv.reader(f)
+station = 'GLD' #sys.argv[1]
+f = open('data/%s_obs.txt' % station)
+data = [x.split(',') for x in f.readlines()]
 
 start_dt = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
 recent_dt = start_dt - datetime.timedelta(days = 14)
 
-keys = next(data)
-pcp_idx = keys.index('PRCP')
-Tmax_idx = keys.index('TMAX')
-Tmin_idx = keys.index('TMIN')
-wnd_idx = keys.index('WSF2')
-wnddir_idx = keys.index('WDF2')
+keys = data[0]
+pcp_idx = keys.index('precip_in')
+Tmax_idx = keys.index('max_temp_f')
+Tmin_idx = keys.index('min_temp_f')
+wnd_idx = keys.index('max_wind_speed_kts')
+wndavg_idx = keys.index('avg_wind_speed_kts')
+wnddir_avg_idx = keys.index('avg_wind_drct')
 
 valid_data = []
 for row in data:
     try:
-        dt = datetime.datetime.strptime(row[2], '%Y-%m-%d')
+        dt = datetime.datetime.strptime(row[1], '%Y-%m-%d')
         pcp = float(row[pcp_idx])
         Tmax = float(row[Tmax_idx])
         Tmin = float(row[Tmin_idx])
@@ -32,7 +34,6 @@ for row in data:
             valid_data.append((dt, Tmax, Tmin, pcp))
     except:
         pass
-
 
 v_date = [x[0] for x in valid_data]
 Tmax = np.asarray([x[1] for x in valid_data])
@@ -44,9 +45,9 @@ max_mos = np.full((len(models), len(v_date)), np.nan)
 min_mos = np.full((len(models), len(v_date)), np.nan)
 
 for (m_idx, model) in enumerate(models):
-    fn = open('data/%s_%s.data' % (station, model), 'rb')
+    fn = open('data/K%s_%s.data' % (station, model), 'rb')
     mos = pickle.load(fn)
-    fn = open('data/%s_%s_tmp.data' % (station, model), 'rb')
+    fn = open('data/K%s_%s_tmp.data' % (station, model), 'rb')
     tmp_2m = pickle.load(fn)
 
     mos_dates = np.asarray([x[0] for x in mos])
@@ -111,5 +112,3 @@ plt.xlabel('Day'); plt.ylabel('Temperature (F)');
 plt.xticks(days, ver_dts); plt.yticks(tmp_range);
 plt.grid(); plt.tight_layout()
 plt.savefig('fig/%s_recent_TMin.png' % station)
-
-print(pcp * 1000)
