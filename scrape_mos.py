@@ -3,11 +3,10 @@ import datetime
 import pickle
 import requests
 import numpy as np
-import sys
+import wx_config
 
 web_link = 'https://mesonet.agron.iastate.edu/mos/table.phtml?'
-station = 'K' + sys.argv[1]
-model = sys.argv[2]
+station = wx_config.get_station_id_4code()
 start_dt = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
 
 def get_mos_gfs(dt):
@@ -68,21 +67,25 @@ def get_mos_nam(dt):
     maxs = fcsts[1]
     return(mins, maxs)
 
-mos_data = []
+gfs_mos_data = []
+nam_mos_data = []
+date_current = datetime.date.today()
+yr = date_current.year
 
-for yr in range(2021, start_dt.year+1):
-    dt_base = datetime.datetime(yr, start_dt.month, start_dt.day, 0)
-    dt_start = dt_base - datetime.timedelta(days=14)
-    dt_end = dt_base + datetime.timedelta(days=21)
+dt_base = datetime.datetime(yr, start_dt.month, start_dt.day, 0)
+dt_start = dt_base - datetime.timedelta(days=14)
+dt_end = dt_base + datetime.timedelta(days=21)
 
-    dt = dt_start
-    while dt <= dt_end and dt < start_dt:
-        if model == 'GFS':
-            mos_data.append((dt, get_mos_gfs(dt)))
-        elif model == 'NAM':
-            mos_data.append((dt, get_mos_nam(dt)))
+dt = dt_start
+while dt <= dt_end and dt < start_dt:
+    gfs_mos_data.append((dt, get_mos_gfs(dt)))
+    nam_mos_data.append((dt, get_mos_nam(dt)))
+    dt = dt + datetime.timedelta(days=1)
 
-        dt = dt + datetime.timedelta(days=1)
+os.makedirs('./data', exist_ok = True)
+with open('data/%s_GFS.data' % station, 'wb') as f:
+    pickle.dump(gfs_mos_data, f)
 
-with open('data/%s_%s.data' % (station, model), 'wb') as f:
-    pickle.dump(mos_data, f)
+with open('data/%s_NAM.data' % station, 'wb') as f:
+    pickle.dump(nam_mos_data, f)
+    

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 def hist_plot(xvar, rnd, xlab, title):
     b_min = np.floor(np.nanmin(xvar) / rnd) * rnd
@@ -13,12 +14,14 @@ def hist_plot(xvar, rnd, xlab, title):
     pcts = [5, 25, 50, 75, 95]
     for pct in pcts:
         plt.scatter([np.nanpercentile(xvar, pct)], [np.nanmax(counts)], c='k', linestyle='-')
-        plt.plot([np.percentile(xvar, pct), np.percentile(xvar, pct)], [0, np.max(counts)], c='k', linestyle='--')
+        plt.plot([np.nanpercentile(xvar, pct), np.nanpercentile(xvar, pct)], [0, np.max(counts)], c='k', linestyle='--')
 
     plt.xlabel(xlab)
     plt.ylabel('Density')
     plt.title('%s' % title)
+    os.makedirs('./fig', exist_ok = True)
     plt.savefig('fig/%s.png' % xlab)
+    print('\tSaved fig/%s.png' % xlab)
     plt.close()
 
 def cdf_plot(xvar, rnd, xlab, title):
@@ -33,5 +36,7 @@ def cdf_plot(xvar, rnd, xlab, title):
     plt.ylabel('Density')
     plt.ylim([0.2, 1])
     plt.title('%s' % title)
+    os.makedirs('./fig', exist_ok = True)
     plt.savefig('fig/%s.png' % xlab)
+    print('\tSaved fig/%s.png' % xlab)
     plt.close()

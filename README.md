@@ -10,3 +10,11 @@ conda create -n wx_challenge python numpy matplotlib beautifulsoup4 requests lxm
 conda activate wx_challenge
 pip install windrose
 ```
+
+You will need to edit the *config.txt* file to adjust for the station ID and state of the station. See the file for more details.
+
+Finally, to run the scripts that download the ASOS + MOS data, and generate climatology and verification:
+```
+bash run.sh
+```
+

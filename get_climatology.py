@@ -1,12 +1,13 @@
 import datetime
 import numpy as np
 import plot_hist
-import sys
 from windrose import WindroseAxes
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
+import os
+import wx_config
 
-station = sys.argv[1]
+station = wx_config.get_station_id()
 f = open('data/%s_obs.txt' % station)
 data = [x.split(',') for x in f.readlines()]
 
@@ -60,7 +61,9 @@ plot_hist.hist_plot(wnd, 1, '%s 2-Minute Maximum Wind (knots)' % station, 'Mean 
 plt.rcParams.update({'font.size': 12})
 plt.figure(figsize=(9, 6.5))
 ax = WindroseAxes.from_ax(theta_labels=["E", "N-E", "N", "N-W", "W", "S-W", "S", "S-E"])
-ax.bar(avgwnd_dirs, avgwnd, normed=True, nsector = 36, opening=1.0, bins=np.arange(5, 35, 5), edgecolor='white')
+w_max = np.nanquantile(avgwnd, 0.99) + 5
+ax.bar(avgwnd_dirs, avgwnd, normed=True, nsector = 36, opening=1.0, bins=np.arange(5, w_max, 5), edgecolor='white')
 ax.set_legend(bbox_to_anchor=(-0.12, -0.1))
 plt.title('%s Average-Wind Wind-Rose' % station)
+os.makedirs('./fig', exist_ok = True)
 plt.savefig('fig/%s.png' % ('%s Wind Rose' % station))

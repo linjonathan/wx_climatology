@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pickle
 import plot_hist
-import sys
+import wx_config
 from bs4 import BeautifulSoup
 
-station = 'GLD' #sys.argv[1]
+station = wx_config.get_station_id()
 f = open('data/%s_obs.txt' % station)
 data = [x.split(',') for x in f.readlines()]
 
@@ -99,6 +99,7 @@ plt.xlabel('Day'); plt.ylabel('Temperature (F)');
 plt.xticks(days, ver_dts); plt.yticks(tmp_range);
 plt.grid(); plt.tight_layout()
 plt.savefig('fig/%s_recent_TMax.png' % station)
+print('\tSaved fig/%s_recent_TMax.png' % station)
 
 tmp_range = range(int(np.minimum(np.nanmin(min_mos), np.min(obs_min))),int(np.maximum(np.nanmax(min_mos), np.max(obs_min)))+1, 2)
 plt.figure(figsize=(10, 5))
@@ -112,3 +113,4 @@ plt.xlabel('Day'); plt.ylabel('Temperature (F)');
 plt.xticks(days, ver_dts); plt.yticks(tmp_range);
 plt.grid(); plt.tight_layout()
 plt.savefig('fig/%s_recent_TMin.png' % station)
+print('\tSaved fig/%s_recent_TMin.png' % station)
