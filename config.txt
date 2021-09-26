@@ -1,0 +1,2 @@
+WA	state identifier of the station (i.e. "WA" for Washington)
+KUIL	4 character station ID (i.e. "KUIL" for Quillayute)
