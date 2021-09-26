@@ -1,4 +1,4 @@
-name: wx_challenge1
+name: wx_challenge
 channels:
   - defaults
 dependencies:
