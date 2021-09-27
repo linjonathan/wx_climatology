@@ -12,6 +12,6 @@ cmd = "network=%s_ASOS&stations=%s&year1=1980&month1=1&day1=1" % (state, station
 cmd2 = "&year2=%d&month2=%d&day2=%d" % (date_current.year, date_current.month, date_current.day)
 
 link = fn_base + cmd + cmd2
-
+os.makedirs('./data', exist_ok = True)
 cmd = 'wget -q -O data/%s_obs.txt "%s"' % (station_asos, link)
 os.system(cmd)
