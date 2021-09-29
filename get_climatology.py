@@ -35,7 +35,10 @@ for row in data:
             pcp = float(row[pcp_idx])
             Tmax = float(row[Tmax_idx])
             Tmin = float(row[Tmin_idx])
-            wnd = float(row[wnd_idx])
+            # 9/29/2021 (jzlin): Note, the data seem to have a units error for some stations. The variables
+            # clearly indicate that the wind speed are in knots, but it appears that there is conversion 
+            # errors in the units. So, we forcefully add the knots-to-mph factor to correct.
+            wnd = float(row[wnd_idx]) / 0.8689
             if wnd == 0:
                 wnd = np.nan
             wndavg = float(row[wndavg_idx])

@@ -29,9 +29,13 @@ for row in data:
         pcp = float(row[pcp_idx])
         Tmax = float(row[Tmax_idx])
         Tmin = float(row[Tmin_idx])
+        # 9/29/2021 (jzlin): Note, the data seem to have a units error for some stations. The variables
+        # clearly indicate that the wind speed are in knots, but it appears that there is conversion 
+        # errors in the units. So, we forcefully add the knots-to-mph factor to correct.
+        wnd = float(row[wnd_idx]) / 0.869
 
         if (dt >= recent_dt) and (dt <= start_dt):
-            valid_data.append((dt, Tmax, Tmin, pcp))
+            valid_data.append((dt, Tmax, Tmin, pcp, wnd))
     except:
         pass
 
@@ -39,6 +43,7 @@ v_date = [x[0] for x in valid_data]
 Tmax = np.asarray([x[1] for x in valid_data])
 Tmin = np.asarray([x[2] for x in valid_data])
 pcp = np.asarray([x[3] for x in valid_data])
+wnds = np.asarray([x[4] for x in valid_data])
 
 models = ['GFS', 'NAM']
 max_mos = np.full((len(models), len(v_date)), np.nan)
@@ -114,3 +119,12 @@ plt.xticks(days, ver_dts); plt.yticks(tmp_range);
 plt.grid(); plt.tight_layout()
 plt.savefig('fig/%s_recent_TMin.png' % station)
 print('\tSaved fig/%s_recent_TMin.png' % station)
+
+plt.figure(figsize=(10, 5))
+plt.plot(days, wnds, 'kx-')
+plt.title('Observed Wind');
+plt.xlabel('Day'); plt.ylabel('Wind (knots)');
+plt.xticks(days, ver_dts);
+plt.grid(); plt.tight_layout()
+plt.savefig('fig/%s_recent_wnd.png' % station)
+print('\tSaved fig/%s_recent_wnd.png' % station)
