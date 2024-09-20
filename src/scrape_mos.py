@@ -3,11 +3,11 @@ import datetime
 import pickle
 import requests
 import os
+import sys
 import numpy as np
-import wx_config
 
 web_link = 'https://mesonet.agron.iastate.edu/mos/table.phtml?'
-station = wx_config.get_station_id_4code()
+station = sys.argv[1]
 start_dt = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
 
 def get_mos_gfs(dt):

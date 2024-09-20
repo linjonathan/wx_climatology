@@ -1,10 +1,9 @@
 import datetime
 import os
 import sys
-import wx_config
 
-state = wx_config.get_state_id()
-station_asos = wx_config.get_station_id()
+state = sys.argv[1]
+station_asos = sys.argv[2][1:]
 date_current = datetime.date.today()
 
 fn_base = "https://mesonet.agron.iastate.edu/cgi-bin/request/daily.py?"

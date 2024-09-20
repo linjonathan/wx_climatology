@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pickle
 import plot_hist
-import wx_config
+import sys
 from bs4 import BeautifulSoup
 
-station = wx_config.get_station_id()
+station = sys.argv[1][1:]
 f = open('data/%s_obs.txt' % station)
 data = [x.split(',') for x in f.readlines()]
 
@@ -96,29 +96,31 @@ plt.figure(figsize=(10, 5))
 cols = ['b', 'r']
 for idx in range(len(models)):
     plt.plot(days, max_mos[idx, :], c=cols[idx], linewidth=len(models)-idx)
-    plt.scatter(np.asarray(days)[max_6z], max_mos[idx, :][max_6z], c=cols[idx])
 plt.plot(days, obs_max, 'kx')
 plt.scatter(np.asarray(days)[pcp > 0], np.full(np.sum(pcp > 0), tmp_range[-1]+1), pcp[pcp> 0]*1000, c='g')
 plt.title('TMax'); plt.legend(['GFS MOS', 'NAM MOS', 'Observed'])
+for idx in range(len(models)):    
+    plt.scatter(np.asarray(days)[max_6z], max_mos[idx, :][max_6z], c=cols[idx])
 plt.xlabel('Day'); plt.ylabel('Temperature (F)');
 plt.xticks(days, ver_dts); plt.yticks(tmp_range);
 plt.grid(); plt.tight_layout()
-plt.savefig('fig/%s_recent_TMax.png' % station)
-print('\tSaved fig/%s_recent_TMax.png' % station)
+plt.savefig('fig/recent_TMax.png')
+print('\tSaved fig/recent_TMax.png')
 
 tmp_range = range(int(np.minimum(np.nanmin(min_mos), np.min(obs_min))),int(np.maximum(np.nanmax(min_mos), np.max(obs_min)))+1, 2)
 plt.figure(figsize=(10, 5))
 for idx in range(len(models)):
     plt.plot(days, min_mos[idx, :], c=cols[idx], linewidth=len(models)-idx)
-    plt.scatter(np.asarray(days)[min_6z], min_mos[idx, :][min_6z], c=cols[idx])
 plt.plot(days, obs_min, 'kx')
 plt.scatter(np.asarray(days)[pcp > 0], np.full(np.sum(pcp > 0), tmp_range[-1]+1), pcp[pcp> 0]*1000, c='g')
 plt.title('TMin'); plt.legend(['GFS MOS', 'NAM MOS', 'Observed'])
+for idx in range(len(models)):
+    plt.scatter(np.asarray(days)[min_6z], min_mos[idx, :][min_6z], c=cols[idx])
 plt.xlabel('Day'); plt.ylabel('Temperature (F)');
 plt.xticks(days, ver_dts); plt.yticks(tmp_range);
 plt.grid(); plt.tight_layout()
-plt.savefig('fig/%s_recent_TMin.png' % station)
-print('\tSaved fig/%s_recent_TMin.png' % station)
+plt.savefig('fig/recent_TMin.png')
+print('\tSaved fig/recent_TMin.png')
 
 plt.figure(figsize=(10, 5))
 plt.plot(days, wnds, 'kx-')
@@ -126,5 +128,5 @@ plt.title('Observed Wind');
 plt.xlabel('Day'); plt.ylabel('Wind (knots)');
 plt.xticks(days, ver_dts);
 plt.grid(); plt.tight_layout()
-plt.savefig('fig/%s_recent_wnd.png' % station)
-print('\tSaved fig/%s_recent_wnd.png' % station)
+plt.savefig('fig/recent_wnd.png')
+print('\tSaved fig/recent_wnd.png')

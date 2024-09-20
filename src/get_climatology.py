@@ -5,9 +5,9 @@ from windrose import WindroseAxes
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import os
-import wx_config
+import sys
 
-station = wx_config.get_station_id()
+station = sys.argv[1][1:]
 f = open('data/%s_obs.txt' % station)
 data = [x.split(',') for x in f.readlines()]
 
@@ -69,6 +69,6 @@ ax.bar(avgwnd_dirs, avgwnd, normed=True, nsector = 36, opening=1.0, bins=np.aran
 ax.set_legend(bbox_to_anchor=(-0.12, -0.1))
 plt.title('%s Average-Wind Wind-Rose' % station)
 os.makedirs('./fig', exist_ok = True)
-fig_name = 'fig/%s.png' % ('%s Wind Rose' % station)
+fig_name = 'fig/Wind_Rose.png'
 plt.savefig(fig_name)
 print('\tSaved %s' % fig_name)

@@ -5,10 +5,9 @@ import requests
 import os
 import numpy as np
 import sys
-import wx_config
 
 web_link = 'https://mesonet.agron.iastate.edu/mos/table.phtml?'
-station = wx_config.get_station_id_4code()
+station = sys.argv[1]
 start_dt = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
 vnames = ['tmp', 'cld']
 sys.setrecursionlimit(10000)

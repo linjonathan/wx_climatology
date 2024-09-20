@@ -20,8 +20,8 @@ def hist_plot(xvar, rnd, xlab, title):
     plt.ylabel('Density')
     plt.title('%s' % title)
     os.makedirs('./fig', exist_ok = True)
-    plt.savefig('fig/%s.png' % xlab)
-    print('\tSaved fig/%s.png' % xlab)
+    plt.savefig('fig/%s.png' % xlab.replace(' ', '_')[4:])
+    print('\tSaved fig/%s.png' % xlab.replace(' ', '_')[4:])
     plt.close()
 
 def cdf_plot(xvar, rnd, xlab, title):
@@ -35,8 +35,9 @@ def cdf_plot(xvar, rnd, xlab, title):
     plt.xlabel(xlab)
     plt.ylabel('Density')
     plt.ylim([0.2, 1])
+    plt.xlim([0, 1])
     plt.title('%s' % title)
     os.makedirs('./fig', exist_ok = True)
-    plt.savefig('fig/%s.png' % xlab)
-    print('\tSaved fig/%s.png' % xlab)
+    plt.savefig('fig/%s.png' % xlab.replace(' ', '_')[4:])
+    print('\tSaved fig/%s.png' % xlab.replace(' ', '_')[4:])
     plt.close()
