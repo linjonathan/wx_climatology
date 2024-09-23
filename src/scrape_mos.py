@@ -78,7 +78,7 @@ dt_start = dt_base - datetime.timedelta(days=14)
 dt_end = dt_base + datetime.timedelta(days=21)
 
 dt = dt_start
-while dt <= dt_end and dt < start_dt:
+while dt <= dt_end and dt <= start_dt:
     gfs_mos_data.append((dt, get_mos_gfs(dt)))
     nam_mos_data.append((dt, get_mos_nam(dt)))
     dt = dt + datetime.timedelta(days=1)
