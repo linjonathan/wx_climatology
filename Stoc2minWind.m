@@ -80,7 +80,7 @@ tmaxi = find(windx==max(windx));
 tmax = tnum(tmaxi(1));
 
 samp = 5; %seconds
-numts = 100; %number of time series to generate
+numts = 20; %number of time series to generate
 
 %interpolate wind data to every minute
 tdens = max(tnum(1),tmax-2/24):samp/(24*60*60):min(tnum(end),tmax+2/24);

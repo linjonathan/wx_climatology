@@ -2,3 +2,11 @@
 *.png
 *.csv
 *.data
+*~
+*.idx
+*.grb2
+gfs*
+bufkit/*
+bufkit
+*.mat
+*.pyc
